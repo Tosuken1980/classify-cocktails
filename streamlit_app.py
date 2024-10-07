@@ -42,7 +42,7 @@ with col_ini1:
     st.write(f"We have a total of {n_cocktails} cocktails for classification.")
     selected_batch_id = st.selectbox("Please select a batch for classify 10 cocktails:", batch_ids)
 
-df_sample = df_selection[df_selection==selected_batch_id - 1]
+df_sample = df_selection[df_selection.batch_id==selected_batch_id - 1]
 
 
 for _ , cocktail in df_sample.iterrows():
