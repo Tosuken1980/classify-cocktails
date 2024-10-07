@@ -9,7 +9,7 @@ from PIL import Image
 import io
 import boto3
 import requests
-import StringIO
+from io import StringIO
 
 
 client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
