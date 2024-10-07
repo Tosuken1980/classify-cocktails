@@ -54,7 +54,7 @@ for _ , cocktail in df_sample.iterrows():
         # Si no están de acuerdo, pedir una propuesta
         if agreement_preparation == "No":
             alternative_preparation = st.selectbox(f"Proposed classification for {cocktail['cocktail_name']}", 
-                                               options=classification_options, 
+                                               options=preparation_options, 
                                                key=f"select_prep_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
