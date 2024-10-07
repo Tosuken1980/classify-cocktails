@@ -23,39 +23,62 @@ csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
 df_cocktails = pd.read_csv(StringIO(body))
 
-df_sample = df_cocktails.iloc[:4]
+df_sample = df_cocktails.iloc[:10]
+
+responses = []
 
 st.title("Evaluation of Cocktail Ingredients and Classification")
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
         # Crear dos columnas
-    col1, col2, col3 = st.columns([2, 1,4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
+    col1, col2, col3 = st.columns([3, 1, 1])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
         st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
-        st.write(f"Proposed classification: {cocktail['cocktail_preparation']}")
 
-    # En la segunda columna, poner la opción del radio
-    with col2:
-        agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
-
-        # Si no están de acuerdo, pedir una propuesta
-        if agreement == "No":
-            alternative = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
-        else:
-            alternative = None
-
-    # En la segunda columna, poner la opción del radio
-    with col3:
         show_directions = st.checkbox(f"Show directions?", key=f"checkbox_{cocktail['cocktail_name']}")
 
         if show_directions:
             st.write(cocktail["directions"])
+
+
+    # En la segunda columna, poner la opción del radio
+    with col2:
+        st.write(f"Preparation: {cocktail['cocktail_preparation']}")
+
+        agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+
+        # Si no están de acuerdo, pedir una propuesta
+        if agreement == "No":
+            alternative_preparation = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+        else:
+            alternative_preparation = None
+
+    # En la segunda columna, poner la opción del radio
+    with col3:
+        st.write(f"Type: {cocktail['temperature_serving']}")
+
+        agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+
+        # Si no están de acuerdo, pedir una propuesta
+        if agreement == "No":
+            alternative_temperature = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+        else:
+            alternative_temperature = None
+
+      # Guardar respuestas en la lista
+    responses.append({
+        'cocktail_name': cocktail['cocktail_name'],
+        'alternative_classification': alternative_preparation,
+        'alternative_temperature': alternative_temperature
+    })
     st.write("---")
 
 # Al hacer clic en enviar, se podría guardar la información o hacer algo con ella
 if st.button("Send evaluation"):
     st.write("Thanks for your contribution!")
-    # Aquí puedes guardar las respuestas en una base de datos o archivo
+    df_responses = pd.DataFrame(responses)
+    st.write("Evaluation Responses:")
+    st.dataframe(df_responses) 
