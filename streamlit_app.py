@@ -27,7 +27,7 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
 )
-cocktails = df_cocktails.sample(5)
+cocktails = df_cocktails.sample(2)
 
 
 for _ , cocktail in cocktails.iterrows():
