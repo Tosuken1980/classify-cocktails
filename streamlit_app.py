@@ -11,52 +11,32 @@ import boto3
 import requests
 from io import StringIO
 
+import streamlit as st
 
-client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
-s3 = boto3.client('s3', aws_access_key_id=st.secrets['aws_access_key_id'], aws_secret_access_key=st.secrets['aws_secret_access_key'])
+# Lista de cócteles y sus ingredientes
+cocktails = [
+    {"name": "Piña Colada", "ingredients": "Coconut cream, Pineapple juice, White rum", "classification": "Milky"},
+    {"name": "Margarita", "ingredients": "Tequila, Lime juice, Triple sec", "classification": "Clear"},
+    # Añadir más cócteles aquí
+]
 
-bucket_name = st.secrets["bucket_mixo_data"]
-object_name = "cocktails_info_v6.csv"
+st.title("Evaluación de Ingredientes y Clasificación de Cócteles")
 
-
-csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
-body = csv_obj['Body'].read().decode('utf-8')
-df_cocktails = pd.read_csv(StringIO(body))
-
-st.title("Evaluation of Cocktail Ingredients and Classification")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
-)
-
-if 'responses' not in st.session_state:
-    st.session_state['responses'] = {}
-
-cocktails = df_cocktails.sample(2)
-
-
-for idx, cocktail in cocktails.iterrows():
-
-    key_agreement = f"agreement_{idx}"
-    key_alternative = f"alternative_{idx}"
-
-    st.subheader(f"Cóctel: {cocktail['cocktail_name']}")
-    st.write(f"Ingredientes: {cocktail['transformed_ingredients']}")
-    st.write(f"Clasificación propuesta: {cocktail['cocktail_preparation']}")
-
+# Iterar sobre los cócteles para generar el formulario
+for cocktail in cocktails:
+    st.subheader(f"Cóctel: {cocktail['name']}")
+    st.write(f"Ingredientes: {cocktail['ingredients']}")
+    st.write(f"Clasificación propuesta: {cocktail['classification']}")
+    
     # Preguntar si están de acuerdo con la clasificación
-    agreement = st.radio(f"¿Estás de acuerdo con la clasificación de {cocktail['cocktail_name']}?", ("Sí", "No"), key=key_agreement)
+    agreement = st.radio(f"¿Estás de acuerdo con la clasificación de {cocktail['name']}?", ("Sí", "No"))
 
     # Si no están de acuerdo, pedir una propuesta
     if agreement == "No":
-        alternative = st.text_input(f"Propuesta de clasificación para {cocktail['cocktail_name']}", key=key_alternative)
+        alternative = st.text_input(f"Propuesta de clasificación para {cocktail['name']}")
     else:
         alternative = None
-   
-    # Guardar la respuesta en session_state
-    st.session_state['responses'][cocktail['cocktail_name']] = {
-        'agreement': agreement,
-        'alternative': alternative
-    }
+
     st.write("---")
 
 # Al hacer clic en enviar, se podría guardar la información o hacer algo con ella
