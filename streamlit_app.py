@@ -25,8 +25,9 @@ appeareance_options = ['cloudy', 'clear', 'milky']
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
 df_cocktails = pd.read_csv(StringIO(body))
+df_selection = df_cocktails[(df_cocktails["cocktail_preparation"]=="stirred")&(df_cocktails.temperature_serving=="up drinks")&(df_cocktails.cocktail_appearance=="milky")]  
 
-df_sample = df_cocktails.iloc[:10]
+df_sample = df_selection.iloc[:15]
 
 responses = []
 st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
