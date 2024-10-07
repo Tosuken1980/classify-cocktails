@@ -32,8 +32,8 @@ cocktails = df_cocktails.sample(5)
 
 for _ , cocktail in cocktails.iterrows():
     st.subheader(f"Cóctel: {cocktail['cocktail_name']}")
-    st.write(f"Ingredientes: {cocktail['ingredients']}")
-    st.write(f"Clasificación propuesta: {cocktail['classification']}")
+    st.write(f"Ingredientes: {cocktail['transformed_ingredients']}")
+    st.write(f"Clasificación propuesta: {cocktail['cocktail_preparation']}")
 
     # Preguntar si están de acuerdo con la clasificación
     agreement = st.radio(f"¿Estás de acuerdo con la clasificación de {cocktail['cocktail_name']}?", ("Sí", "No"))
