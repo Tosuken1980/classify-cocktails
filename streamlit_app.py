@@ -29,10 +29,10 @@ responses = []
 
 st.title("Evaluation of Cocktail Ingredients and Classification")
 
-col1, col2, col3 = st.columns([3, 4, 4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
+    col1, col2, col3 = st.columns([3, 4, 4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
