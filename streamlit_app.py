@@ -44,7 +44,8 @@ for _ , cocktail in df_sample.iterrows():
             st.write(cocktail["directions"])
 
     with colsep:
-        continue
+        st.write(" ")
+
     with col2:
         st.write(f"Preparation: {cocktail['cocktail_preparation']}")
 
