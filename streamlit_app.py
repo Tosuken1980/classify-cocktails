@@ -23,13 +23,14 @@ csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
 df_cocktails = pd.read_csv(StringIO(body))
 
+df_sample = df_cocktails.sample(4)
 
 # Lista de cócteles y sus ingredientes
 cocktails = [
-    {"name": "Piña Colada", "ingredients": df_cocktails.iloc[2]["transformed_ingredients"], "classification": "Milky"},
-    {"name": "Margarita", "ingredients": "Tequila, Lime juice, Triple sec", "classification": "Clear"},
-    {"name": "Pi", "ingredients": df_cocktails.iloc[4]["transformed_ingredients"], "classification": "Milky"},
-    {"name": "Margarita", "ingredients": "Tequila, Lime juice, Triple sec", "classification": "Clear"},
+    {"name": df_sample.iloc[0]["cocktail_name"], "ingredients": df_sample.iloc[0]["transformed_ingredients"], "classification": df_sample.iloc[0]["cocktail_preparation"]},
+    {"name": df_sample.iloc[1]["cocktail_name"], "ingredients": df_sample.iloc[1]["transformed_ingredients"], "classification": df_sample.iloc[1]["cocktail_preparation"]},
+    {"name": df_sample.iloc[2]["cocktail_name"], "ingredients": df_cocktails.iloc[2]["transformed_ingredients"], "classification": df_sample.iloc[2]["cocktail_preparation"]},
+    {"name": df_sample.iloc[3]["cocktail_name"], "ingredients": df_sample.iloc[3]["transformed_ingredients"], "classification": df_sample.iloc[3]["cocktail_preparation"]}
     # Añadir más cócteles aquí
 ]
 
