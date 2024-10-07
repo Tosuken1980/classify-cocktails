@@ -41,17 +41,12 @@ for _ , cocktail in df_sample.iterrows():
     with col2:
         agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
 
-    # Si no están de acuerdo, pedir una propuesta
-    if agreement == "No":
-        alternative = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
-    else:
-        alternative = None
+        # Si no están de acuerdo, pedir una propuesta
+        if agreement == "No":
+            alternative = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+        else:
+            alternative = None
 
-    # Si no están de acuerdo, pedir una propuesta
-    if agreement == "No":
-        alternative = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}")
-    else:
-        alternative = None
 
     st.write("---")
 
