@@ -29,12 +29,12 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
-    st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
         # Crear dos columnas
     col1, col2 = st.columns([2, 1])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
+        st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
         st.write(f"Proposed classification: {cocktail['cocktail_preparation']}")
 
     # En la segunda columna, poner la opción del radio
