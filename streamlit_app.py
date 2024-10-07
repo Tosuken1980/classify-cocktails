@@ -48,10 +48,10 @@ for _ , cocktail in df_sample.iterrows():
     with col2:
         st.write(f"Preparation: {cocktail['cocktail_preparation']}")
 
-        agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+        agreement_preparation = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
-        if agreement == "No":
+        if agreement_preparation == "No":
             alternative_preparation = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
@@ -60,10 +60,10 @@ for _ , cocktail in df_sample.iterrows():
     with col3:
         st.write(f"Type: {cocktail['temperature_serving']}")
 
-        agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+        agreement_type = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
-        if agreement == "No":
+        if agreement_type == "No":
             alternative_temperature = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
         else:
             alternative_temperature = None
