@@ -25,28 +25,20 @@ appeareance_options = ['cloudy', 'clear', 'milky']
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
 df_cocktails = pd.read_csv(StringIO(body))
-df_selection = df_cocktails[(df_cocktails["cocktail_preparation"]=="stirred")&(df_cocktails.temperature_serving=="up drinks")&(df_cocktails.cocktail_appearance=="milky")]  
-
-df_sample = df_selection.iloc[:15]
+#df_selection = df_cocktails[(df_cocktails["cocktail_preparation"]=="stirred")&(df_cocktails.temperature_serving=="up drinks")&(df_cocktails.cocktail_appearance=="milky")]  
+df_selection = df_cocktails[(df_cocktails.cocktail_appearance=="--")|(df_cocktails.cocktail_appearance=="milky")]  
+n_cocktails = df_selection.shape[0]
+df_sample = df_selection.iloc[:8]
 
 responses = []
 st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
 st.title("Evaluation of Cocktail Ingredients and Classification")
-# Configura el tema claro
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: white;
-        color: black;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     evaluator_name = st.text_input("Please enter your name:", "")
+with col_ini2:
+    st.write(f"We have a total of {n_cocktails} for classification. Please select a bathc of ten for classification")
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
