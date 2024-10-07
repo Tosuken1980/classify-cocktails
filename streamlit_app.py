@@ -19,6 +19,8 @@ bucket_name = st.secrets["bucket_mixo_data"]
 object_name = "cocktails_info_v6.csv"
 
 preparation_options = ['blended', 'builded', 'layered', 'muddle', 'throw', 'shaken', 'stirred', 'swizzle']
+temperature_options = ['ice drinks', 'up drinks', 'warm drinks']
+appeareance_options = ['cloudy', 'clear', 'milky']
 
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
@@ -27,6 +29,7 @@ df_cocktails = pd.read_csv(StringIO(body))
 df_sample = df_cocktails.iloc[:10]
 
 responses = []
+st.set_page_config(page_title="Mi App", layout="wide", initial_sidebar_state="expanded")
 
 st.title("Evaluation of Cocktail Ingredients and Classification")
 
@@ -66,7 +69,10 @@ for _ , cocktail in df_sample.iterrows():
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_temperature == "No":
-            alternative_temperature = st.text_input(f"Proposed classification", key=f"text_temp_{cocktail['cocktail_name']}")
+            #alternative_temperature = st.text_input(f"Proposed classification", key=f"text_temp_{cocktail['cocktail_name']}")
+            alternative_temperature = st.selectbox(f"Proposed classification", 
+                                               options=temperature_options, 
+                                               key=f"select_temp_{cocktail['cocktail_name']}")
         else:
             alternative_temperature = None
 
@@ -77,7 +83,9 @@ for _ , cocktail in df_sample.iterrows():
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_appearence == "No":
-            alternative_appearence = st.text_input(f"Proposed classification", key=f"text_appe_{cocktail['cocktail_name']}")
+            alternative_appearence = st.selectbox(f"Proposed classification", 
+                                               options=appeareance_options, 
+                                               key=f"select_appe_{cocktail['cocktail_name']}")
         else:
             alternative_appearence = None
 
@@ -86,6 +94,7 @@ for _ , cocktail in df_sample.iterrows():
         'Cocktail name': cocktail['cocktail_name'],
         'Proposed preparation': alternative_preparation,
         'Proposed type': alternative_temperature,
+        'Proposed type': alternative_appearence
     })
     st.write("---")
 
