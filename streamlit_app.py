@@ -43,7 +43,10 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-evaluator_name = st.text_input("Please enter your name:", "")
+col_ini1, col_ini2 = st.columns([1, 3])
+with col_ini1:
+    evaluator_name = st.text_input("Please enter your name:", "")
+
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
 
