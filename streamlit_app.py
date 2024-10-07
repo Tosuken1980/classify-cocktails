@@ -27,23 +27,36 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
 )
+
+if 'responses' not in st.session_state:
+    st.session_state['responses'] = {}
+
 cocktails = df_cocktails.sample(2)
 
 
-for _ , cocktail in cocktails.iterrows():
+for idx, cocktail in cocktails.iterrows():
+
+    key_agreement = f"agreement_{idx}"
+    key_alternative = f"alternative_{idx}"
+
     st.subheader(f"Cóctel: {cocktail['cocktail_name']}")
     st.write(f"Ingredientes: {cocktail['transformed_ingredients']}")
     st.write(f"Clasificación propuesta: {cocktail['cocktail_preparation']}")
 
     # Preguntar si están de acuerdo con la clasificación
-    agreement = st.radio(f"¿Estás de acuerdo con la clasificación de {cocktail['cocktail_name']}?", ("Sí", "No"))
+    agreement = st.radio(f"¿Estás de acuerdo con la clasificación de {cocktail['cocktail_name']}?", ("Sí", "No"), key=key_agreement)
 
     # Si no están de acuerdo, pedir una propuesta
     if agreement == "No":
-        alternative = st.text_input(f"Propuesta de clasificación para {cocktail['cocktail_name']}")
+        alternative = st.text_input(f"Propuesta de clasificación para {cocktail['cocktail_name']}", key=key_alternative)
     else:
         alternative = None
-
+   
+    # Guardar la respuesta en session_state
+    st.session_state['responses'][cocktail['cocktail_name']] = {
+        'agreement': agreement,
+        'alternative': alternative
+    }
     st.write("---")
 
 # Al hacer clic en enviar, se podría guardar la información o hacer algo con ella
