@@ -38,8 +38,8 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
-    st.write(f"Ingredients: {cocktail['ingredients']}")
-    st.write(f"Proposed classification: {cocktail['classification']}")
+    st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
+    st.write(f"Proposed classification: {cocktail['cocktail_preparation']}")
 
     # Preguntar si están de acuerdo con la clasificación
     agreement = st.radio(f"Do you agree with the classification for  {cocktail['cocktail_name']}?", ("Yes", "No"))
