@@ -25,24 +25,27 @@ df_cocktails = pd.read_csv(StringIO(body))
 
 df_sample = df_cocktails.iloc[:4]
 
-# Lista de cócteles y sus ingredientes
-cocktails = [
-    {"name": df_sample.iloc[0]["cocktail_name"], "ingredients": df_sample.iloc[0]["transformed_ingredients"], "classification": df_sample.iloc[0]["cocktail_preparation"]},
-    {"name": df_sample.iloc[1]["cocktail_name"], "ingredients": df_sample.iloc[1]["transformed_ingredients"], "classification": df_sample.iloc[1]["cocktail_preparation"]},
-    {"name": df_sample.iloc[2]["cocktail_name"], "ingredients": df_cocktails.iloc[2]["transformed_ingredients"], "classification": df_sample.iloc[2]["cocktail_preparation"]},
-    {"name": df_sample.iloc[3]["cocktail_name"], "ingredients": df_sample.iloc[3]["transformed_ingredients"], "classification": df_sample.iloc[3]["cocktail_preparation"]}
-    # Añadir más cócteles aquí
-]
-
 st.title("Evaluation of Cocktail Ingredients and Classification")
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
     st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
-    st.write(f"Proposed classification: {cocktail['cocktail_preparation']}")
+        # Crear dos columnas
+    col1, col2 = st.columns([2, 1])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
-    # Preguntar si están de acuerdo con la clasificación
-    agreement = st.radio(f"Do you agree with the classification for  {cocktail['cocktail_name']}?", ("Yes", "No"))
+    # En la primera columna, poner la clasificación propuesta
+    with col1:
+        st.write(f"Proposed classification: {cocktail['cocktail_preparation']}")
+
+    # En la segunda columna, poner la opción del radio
+    with col2:
+        agreement = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+
+    # Si no están de acuerdo, pedir una propuesta
+    if agreement == "No":
+        alternative = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+    else:
+        alternative = None
 
     # Si no están de acuerdo, pedir una propuesta
     if agreement == "No":
