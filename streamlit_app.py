@@ -43,7 +43,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
+evaluator_name = st.text_input("Please enter your name:", "")
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
 
@@ -110,7 +110,20 @@ for _ , cocktail in df_sample.iterrows():
 
 # Al hacer clic en enviar, se podría guardar la información o hacer algo con ella
 if st.button("Send evaluation"):
-    st.write("Thanks for your contribution!")
-    df_responses = pd.DataFrame(responses)
-    st.write("Evaluation Responses:")
-    st.dataframe(df_responses) 
+    if evaluator_name:
+        # Crear el nombre del archivo usando el nombre del evaluador y la fecha/hora actual
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"{evaluator_name}_{timestamp}.csv"
+        
+        # Convertir las respuestas en un DataFrame
+        df_responses = pd.DataFrame(responses)
+        
+        # Guardar el DataFrame como un CSV en S3 (aquí debes agregar tu código para S3)
+        # Ejemplo (necesitarás boto3 u otro cliente S3):
+        # df_responses.to_csv(f"s3://tu-bucket/{filename}", index=False)
+        
+        st.write("Thanks for your contribution!")
+        st.write("Evaluation Responses:")
+        st.dataframe(df_responses)
+    else:
+        st.warning("Please enter your name before submitting.")
