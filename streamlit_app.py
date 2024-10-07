@@ -30,7 +30,7 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
         # Crear dos columnas
-    col1, col2 = st.columns([2, 1])  # Puedes ajustar el ancho de las columnas con los valores de la lista
+    col1, col2, col3 = st.columns([2, 1,4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
@@ -47,7 +47,12 @@ for _ , cocktail in df_sample.iterrows():
         else:
             alternative = None
 
+    # En la segunda columna, poner la opción del radio
+    with col3:
+        show_directions = st.checkbox(f"Show directions?", key=f"checkbox_{cocktail['cocktail_name']}")
 
+        if show_directions:
+            st.write(cocktail["directions"])
     st.write("---")
 
 # Al hacer clic en enviar, se podría guardar la información o hacer algo con ella
