@@ -35,11 +35,9 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 st.markdown(
     """
     <style>
-    .streamlit-expanderHeader {
-        color: black;
-    }
-    .css-18e3th9 {
+    body {
         background-color: white;
+        color: black;
     }
     </style>
     """,
