@@ -23,7 +23,7 @@ csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
 df_cocktails = pd.read_csv(StringIO(body))
 
-df_sample = df_cocktails.sample(4)
+df_sample = df_cocktails.iloc[:4]
 
 # Lista de cócteles y sus ingredientes
 cocktails = [
