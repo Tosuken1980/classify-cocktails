@@ -29,10 +29,22 @@ df_cocktails = pd.read_csv(StringIO(body))
 df_sample = df_cocktails.iloc[:10]
 
 responses = []
-st.set_page_config(page_title="Mi App", layout="wide", initial_sidebar_state="expanded")
-
+st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
 st.title("Evaluation of Cocktail Ingredients and Classification")
-
+# Configura el tema claro
+st.markdown(
+    """
+    <style>
+    .streamlit-expanderHeader {
+        color: black;
+    }
+    .css-18e3th9 {
+        background-color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
