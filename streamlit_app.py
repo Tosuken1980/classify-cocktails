@@ -34,26 +34,25 @@ cocktails = [
     # Añadir más cócteles aquí
 ]
 
-st.title("Evaluación de Ingredientes y Clasificación de Cócteles")
+st.title("Evaluation of Cocktail Ingredients and Classification")
 
-# Iterar sobre los cócteles para generar el formulario
-for cocktail in cocktails:
-    st.subheader(f"Cóctel: {cocktail['name']}")
-    st.write(f"Ingredientes: {cocktail['ingredients']}")
-    st.write(f"Clasificación propuesta: {cocktail['classification']}")
-    
+for _ , cocktail in df_sample.iterrows():
+    st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
+    st.write(f"Ingredients: {cocktail['ingredients']}")
+    st.write(f"Proposed classification: {cocktail['classification']}")
+
     # Preguntar si están de acuerdo con la clasificación
-    agreement = st.radio(f"¿Estás de acuerdo con la clasificación de {cocktail['name']}?", ("Sí", "No"))
+    agreement = st.radio(f"Do you agree with the classification for  {cocktail['cocktail_name']}?", ("Yes", "No"))
 
     # Si no están de acuerdo, pedir una propuesta
     if agreement == "No":
-        alternative = st.text_input(f"Propuesta de clasificación para {cocktail['name']}")
+        alternative = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}")
     else:
         alternative = None
 
     st.write("---")
 
 # Al hacer clic en enviar, se podría guardar la información o hacer algo con ella
-if st.button("Enviar evaluación"):
-    st.write("¡Gracias por tu evaluación!")
+if st.button("Send evaluation"):
+    st.write("Thanks for your contribution!")
     # Aquí puedes guardar las respuestas en una base de datos o archivo
