@@ -94,7 +94,7 @@ for _ , cocktail in df_sample.iterrows():
         'Cocktail name': cocktail['cocktail_name'],
         'Proposed preparation': alternative_preparation,
         'Proposed type': alternative_temperature,
-        'Proposed type': alternative_appearence
+        'Proposed appearence': alternative_appearence
     })
     st.write("---")
 
