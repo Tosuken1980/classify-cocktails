@@ -1,4 +1,5 @@
 from openai import OpenAI
+import numpy as np
 import json
 import os
 import pandas as pd
@@ -16,7 +17,7 @@ client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
 s3 = boto3.client('s3', aws_access_key_id=st.secrets['aws_access_key_id'], aws_secret_access_key=st.secrets['aws_secret_access_key'])
 
 bucket_name = st.secrets["bucket_mixo_data"]
-object_name = "cocktails_info_v6.csv"
+object_name = "cocktails_selected.csv"
 
 preparation_options = ['blended', 'builded', 'layered', 'muddle', 'throw', 'shaken', 'stirred', 'swizzle']
 temperature_options = ['ice drinks', 'up drinks', 'warm drinks']
@@ -24,11 +25,12 @@ appeareance_options = ['cloudy', 'clear', 'milky']
 
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
-df_cocktails = pd.read_csv(StringIO(body))
+df_selection = pd.read_csv(StringIO(body))
 #df_selection = df_cocktails[(df_cocktails["cocktail_preparation"]=="stirred")&(df_cocktails.temperature_serving=="up drinks")&(df_cocktails.cocktail_appearance=="milky")]  
-df_selection = df_cocktails[(df_cocktails.cocktail_appearance=="--")|(df_cocktails.cocktail_appearance=="milky")]  
+#df_selection = df_cocktails[(df_cocktails.cocktail_appearance=="--")|(df_cocktails.cocktail_appearance=="milky")]  
 n_cocktails = df_selection.shape[0]
-df_sample = df_selection.iloc[:8]
+batch_ids = np.sort(df_selection['batch_id'].unique()) + 1
+
 
 responses = []
 st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
@@ -37,8 +39,11 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     evaluator_name = st.text_input("Please enter your name:", "")
-with col_ini2:
-    st.write(f"We have a total of {n_cocktails} for classification. Please select a bathc of ten for classification")
+    st.write(f"We have a total of {n_cocktails} cocktails for classification.")
+    selected_batch_id = st.selectbox("Please select a batch for classify 10 cocktails:", batch_ids)
+
+df_sample = df_selection[df_selection==selected_batch_id - 1]
+
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
