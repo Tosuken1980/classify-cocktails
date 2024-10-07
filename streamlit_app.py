@@ -18,6 +18,7 @@ s3 = boto3.client('s3', aws_access_key_id=st.secrets['aws_access_key_id'], aws_s
 bucket_name = st.secrets["bucket_mixo_data"]
 object_name = "cocktails_info_v6.csv"
 
+preparation_options = ['blended', 'builded', 'layered', 'muddle', 'throw', 'shaken', 'stirred', 'swizzle']
 
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
@@ -32,7 +33,8 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
-    col1, col2, col3 = st.columns([3, 4, 4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
+
+    col1, colsep, col2, col3 = st.columns([3, 0.1, 4, 4])
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
@@ -41,7 +43,8 @@ for _ , cocktail in df_sample.iterrows():
         if show_directions:
             st.write(cocktail["directions"])
 
-
+    with colsep:
+        continue
     with col2:
         st.write(f"Preparation: {cocktail['cocktail_preparation']}")
 
@@ -49,7 +52,9 @@ for _ , cocktail in df_sample.iterrows():
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_preparation == "No":
-            alternative_preparation = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_prep_{cocktail['cocktail_name']}")
+            alternative_preparation = st.selectbox(f"Proposed classification for {cocktail['cocktail_name']}", 
+                                               options=classification_options, 
+                                               key=f"select_prep_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
 
