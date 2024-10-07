@@ -29,10 +29,10 @@ responses = []
 
 st.title("Evaluation of Cocktail Ingredients and Classification")
 
+col1, col2, col3 = st.columns([2, 4, 4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
+
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
-
-    col1, col2 = st.columns([3,  1])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
@@ -42,7 +42,6 @@ for _ , cocktail in df_sample.iterrows():
             st.write(cocktail["directions"])
 
 
-    # En la segunda columna, poner la opción del radio
     with col2:
         st.write(f"Preparation: {cocktail['cocktail_preparation']}")
 
@@ -53,6 +52,17 @@ for _ , cocktail in df_sample.iterrows():
             alternative_preparation = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
+
+    with col3:
+        st.write(f"Preparation: {cocktail['cocktail_preparation']}")
+
+        agreement_temperature = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+
+        # Si no están de acuerdo, pedir una propuesta
+        if agreement_temperature == "No":
+            alternative_temperature = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+        else:
+            alternative_temperature = None
 
       # Guardar respuestas en la lista
     responses.append({
