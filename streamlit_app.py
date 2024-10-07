@@ -29,7 +29,7 @@ responses = []
 
 st.title("Evaluation of Cocktail Ingredients and Classification")
 
-col1, col2, col3 = st.columns([2, 4, 4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
+col1, col2, col3 = st.columns([3, 4, 4])  # Puedes ajustar el ancho de las columnas con los valores de la lista
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
@@ -45,29 +45,30 @@ for _ , cocktail in df_sample.iterrows():
     with col2:
         st.write(f"Preparation: {cocktail['cocktail_preparation']}")
 
-        agreement_preparation = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+        agreement_preparation = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_prep_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_preparation == "No":
-            alternative_preparation = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+            alternative_preparation = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_prep_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
 
     with col3:
         st.write(f"Preparation: {cocktail['cocktail_preparation']}")
 
-        agreement_temperature = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_{cocktail['cocktail_name']}")
+        agreement_temperature = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_temp_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_temperature == "No":
-            alternative_temperature = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_{cocktail['cocktail_name']}")
+            alternative_temperature = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_temp_{cocktail['cocktail_name']}")
         else:
             alternative_temperature = None
 
       # Guardar respuestas en la lista
     responses.append({
-        'cocktail_name': cocktail['cocktail_name'],
-        'alternative_classification': alternative_preparation
+        'Cocktail name': cocktail['cocktail_name'],
+        'Proposed preparation': alternative_preparation,
+        'Proposed type': alternative_temperature,
     })
     st.write("---")
 
