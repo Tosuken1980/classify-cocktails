@@ -34,7 +34,7 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
 
-    col1, colsep, col2, col3 = st.columns([3, 0.1, 4, 4])
+    col1, colsep, col2, col3, col4 = st.columns([3, 0.1, 1, 1, 1])
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
@@ -53,22 +53,33 @@ for _ , cocktail in df_sample.iterrows():
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_preparation == "No":
-            alternative_preparation = st.selectbox(f"Proposed classification for {cocktail['cocktail_name']}", 
+            alternative_preparation = st.selectbox(f"Proposed classification", 
                                                options=preparation_options, 
                                                key=f"select_prep_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
 
     with col3:
-        st.write(f"Preparation: {cocktail['cocktail_preparation']}")
+        st.write(f"Type: {cocktail['temperature_serving']}")
 
         agreement_temperature = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_temp_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
         if agreement_temperature == "No":
-            alternative_temperature = st.text_input(f"Proposed classification for {cocktail['cocktail_name']}", key=f"text_temp_{cocktail['cocktail_name']}")
+            alternative_temperature = st.text_input(f"Proposed classification", key=f"text_temp_{cocktail['cocktail_name']}")
         else:
             alternative_temperature = None
+
+    with col4:
+        st.write(f"Appearence: {cocktail['cocktail_appearance']}")
+
+        agreement_appearence = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_appe_{cocktail['cocktail_name']}")
+
+        # Si no están de acuerdo, pedir una propuesta
+        if agreement_appearence == "No":
+            alternative_appearence = st.text_input(f"Proposed classification", key=f"text_appe_{cocktail['cocktail_name']}")
+        else:
+            alternative_appearence = None
 
       # Guardar respuestas en la lista
     responses.append({
