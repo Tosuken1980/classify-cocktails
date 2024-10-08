@@ -56,7 +56,7 @@ for _ , cocktail in df_sample.iterrows():
     # En la primera columna, poner la clasificación propuesta
     with col1:
         #st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
-        st.markdown(f"Ingredients: **{cocktail['transformed_ingredients']}**")
+        st.markdown(f"**Ingredients:** {cocktail['transformed_ingredients']}")
         show_directions = st.checkbox(f"Show directions?", value=False, key=f"checkbox_{cocktail['cocktail_name']}")
         if show_directions:
             st.write(cocktail["directions"])
@@ -65,8 +65,8 @@ for _ , cocktail in df_sample.iterrows():
         st.write(" ")
 
     with col2:
-        st.write(f"Preparation: {cocktail['cocktail_preparation']}")
-
+        #st.write(f"Preparation: {cocktail['cocktail_preparation']}")
+        st.markdown(f"Preparation: **{cocktail['cocktail_preparation']}**")
         agreement_preparation = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_prep_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
@@ -78,7 +78,8 @@ for _ , cocktail in df_sample.iterrows():
             alternative_preparation = None
 
     with col3:
-        st.write(f"Type: {cocktail['temperature_serving']}")
+        #st.write(f"Type: {cocktail['temperature_serving']}")
+        st.markdown(f"Type: **{cocktail['temperature_serving']}**")
 
         agreement_temperature = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_temp_{cocktail['cocktail_name']}")
 
@@ -92,7 +93,8 @@ for _ , cocktail in df_sample.iterrows():
             alternative_temperature = None
 
     with col4:
-        st.write(f"Appearence: {cocktail['cocktail_appearance']}")
+        #st.write(f"Appearence: {cocktail['cocktail_appearance']}")
+        st.markdown(f"Appearence: **{cocktail['cocktail_appearance']}**")
 
         agreement_appearence = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_appe_{cocktail['cocktail_name']}")
 
