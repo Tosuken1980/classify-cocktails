@@ -66,8 +66,8 @@ for _ , cocktail in df_sample.iterrows():
 
     with col2:
         #st.write(f"Preparation: {cocktail['cocktail_preparation']}")
-        st.markdown(f"Preparation: **{cocktail['cocktail_preparation']}**")
-        st.markdown(f"<span style='color:gray;'>Preparation:</span> <span style='color:red; font-weight:bold;'>{cocktail['cocktail_preparation']}</span>", unsafe_allow_html=True)
+        #st.markdown(f"Preparation: **{cocktail['cocktail_preparation']}**")
+        st.markdown(f"<span style='color:gray;font-weight:bold;'>Preparation:</span> <span style='color:red; font-weight:bold;'>{cocktail['cocktail_preparation']}</span>", unsafe_allow_html=True)
 
         agreement_preparation = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_prep_{cocktail['cocktail_name']}")
 
@@ -97,7 +97,7 @@ for _ , cocktail in df_sample.iterrows():
     with col4:
         #st.write(f"Appearence: {cocktail['cocktail_appearance']}")
         #st.markdown(f"Appearence: **{cocktail['cocktail_appearance']}**")
-        st.markdown(f"<span style='color:gray;'>Appearence:</span> <span style='color:red; font-weight:bold;'>{cocktail['cocktail_appearance']}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:gray;font-weight:bold;'>Appearence:</span> <span style='color:red; font-weight:bold;'>{cocktail['cocktail_appearance']}</span>", unsafe_allow_html=True)
 
         agreement_appearence = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_appe_{cocktail['cocktail_name']}")
 
