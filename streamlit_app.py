@@ -41,7 +41,9 @@ with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
     evaluator_name = st.text_input("", "")
     #st.write(f"We have a total of {n_cocktails} cocktails for classification.")
-    selected_batch_id = st.selectbox("Please select a batch for classify 10 cocktails:", batch_ids)
+    #selected_batch_id = st.selectbox("Please select a batch for classify 10 cocktails:", batch_ids)
+    st.markdown("<h3 style='text-align: left;'>Please select a batch for classify 10 cocktails:</h3>", unsafe_allow_html=True)
+    selected_batch_id = st.selectbox("", batch_ids)
 
 df_sample = df_selection[df_selection.batch_id==selected_batch_id - 1]
 
@@ -53,7 +55,8 @@ for _ , cocktail in df_sample.iterrows():
 
     # En la primera columna, poner la clasificación propuesta
     with col1:
-        st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
+        #st.write(f"Ingredients: {cocktail['transformed_ingredients']}")
+        st.markdown(f"Ingredients: **{cocktail['transformed_ingredients']}**")
         show_directions = st.checkbox(f"Show directions?", value=False, key=f"checkbox_{cocktail['cocktail_name']}")
         if show_directions:
             st.write(cocktail["directions"])
