@@ -79,8 +79,8 @@ for _ , cocktail in df_sample.iterrows():
 
     with col3:
         #st.write(f"Type: {cocktail['temperature_serving']}")
-        st.markdown(f"Type: **{cocktail['temperature_serving']}**")
-
+        #st.markdown(f"Type: **{cocktail['temperature_serving']}**")
+        st.markdown(f"<span style='color:blue;'>Type:</span> <span style='color:red; font-weight:bold;'>{cocktail['temperature_serving']}</span>", unsafe_allow_html=True)
         agreement_temperature = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_temp_{cocktail['cocktail_name']}")
 
         # Si no están de acuerdo, pedir una propuesta
