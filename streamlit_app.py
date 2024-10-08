@@ -114,14 +114,15 @@ if st.button("Send evaluation"):
     if evaluator_name:
         # Crear el nombre del archivo usando el nombre del evaluador y la fecha/hora actual
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"{evaluator_name}_{timestamp}.csv"
+        filename = f"survey/batch_{selected_batch_id - 1}_{evaluator_name}_{timestamp}.csv"
         
         # Convertir las respuestas en un DataFrame
         df_responses = pd.DataFrame(responses)
+
+        csv_buffer = StringIO()
+        df_responses.to_csv(csv_buffer, index=False)
         
-        # Guardar el DataFrame como un CSV en S3 (aquí debes agregar tu código para S3)
-        # Ejemplo (necesitarás boto3 u otro cliente S3):
-        # df_responses.to_csv(f"s3://tu-bucket/{filename}", index=False)
+        s3.put_object(Bucket=bucket_name, Key=filename, Body=csv_buffer.getvalue())
         
         st.write("Thanks for your contribution!")
         st.write("Evaluation Responses:")
