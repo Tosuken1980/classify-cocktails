@@ -38,8 +38,9 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
-    evaluator_name = st.text_input("Please enter your name:", "")
-    st.write(f"We have a total of {n_cocktails} cocktails for classification.")
+    st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
+    evaluator_name = st.text_input("", "")
+    #st.write(f"We have a total of {n_cocktails} cocktails for classification.")
     selected_batch_id = st.selectbox("Please select a batch for classify 10 cocktails:", batch_ids)
 
 df_sample = df_selection[df_selection.batch_id==selected_batch_id - 1]
