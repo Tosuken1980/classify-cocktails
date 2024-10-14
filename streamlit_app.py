@@ -1,15 +1,9 @@
 from openai import OpenAI
 import numpy as np
-import json
-import os
 import pandas as pd
 from datetime import datetime
-from zoneinfo import ZoneInfo
 import streamlit as st
-from PIL import Image
-import io
 import boto3
-import requests
 from io import StringIO
 
 
@@ -39,11 +33,11 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
-    evaluator_name = st.text_input("", "")
+    evaluator_name = st.text_input("Name", " ", label_visibility='hidden')
     #st.write(f"We have a total of {n_cocktails} cocktails for classification.")
     #selected_batch_id = st.selectbox("Please select a batch for classify 10 cocktails:", batch_ids)
     st.markdown("<h3 style='text-align: left;'>Please select a batch for classify 10 cocktails:</h3>", unsafe_allow_html=True)
-    selected_batch_id = st.selectbox("", batch_ids)
+    selected_batch_id = st.selectbox("Batch", batch_ids, label_visibility='hidden')
 
 df_sample = df_selection[df_selection.batch_id==selected_batch_id - 1]
 
