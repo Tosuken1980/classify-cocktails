@@ -15,7 +15,7 @@ object_name = "cocktails_selected.csv"
 
 # Options for the selection on each category
 preparation_options = ['blended', 'builded', 'layered', 'muddle', 'throw', 'shaken', 'stirred', 'swizzle']
-temperature_options = ['ice drinks', 'up drinks', 'warm drinks']
+temperature_options = ['iced drinks', 'up drinks', 'warm drinks']
 appeareance_options = ['cloudy', 'clear', 'milky']
 
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
