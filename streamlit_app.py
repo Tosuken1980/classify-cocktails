@@ -63,7 +63,7 @@ for _ , cocktail in df_sample.iterrows():
                                                options=preparation_options, 
                                                key=f"select_prep_{cocktail['cocktail_name']}")
             if alternative_preparation == "other":
-                alternative_preparation = st.text_input("Specify", " ", label_visibility='hidden')
+                alternative_preparation = st.text_input("Specify:", label_visibility='hidden')
         else:
             alternative_preparation = None
 
