@@ -32,7 +32,7 @@ st.title("Evaluation of Cocktail Ingredients and Classification")
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
-    evaluator_name = st.text_input("Name", " ", label_visibility='hidden')
+    evaluator_name = st.text_input("Name", " ", label_visibility='hidden', key=f"text_input_name")
     st.markdown("<h3 style='text-align: left;'>Please select a batch for classify 10 cocktails:</h3>", unsafe_allow_html=True)
     selected_batch_id = st.selectbox("Batch", batch_ids, label_visibility='hidden')
 
@@ -63,7 +63,7 @@ for _ , cocktail in df_sample.iterrows():
                                                options=preparation_options, 
                                                key=f"select_prep_{cocktail['cocktail_name']}")
             if alternative_preparation == "other":
-                alternative_preparation = "prueba"
+                alternative_preparation = st.text_input("Specify:", label_visibility='hidden', key=f"text_input_prep_{cocktail['cocktail_name']}")
         else:
             alternative_preparation = None
 
