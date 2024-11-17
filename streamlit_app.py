@@ -75,6 +75,8 @@ for _ , cocktail in df_sample.iterrows():
             alternative_temperature = st.selectbox(f"Proposed classification", 
                                                options=temperature_options, 
                                                key=f"select_temp_{cocktail['cocktail_name']}")
+            if alternative_temperature == "other":
+                alternative_temperature = st.text_input("Specify:", label_visibility='hidden', key=f"text_input_temp_{cocktail['cocktail_name']}")
         else:
             alternative_temperature = None
 
@@ -86,6 +88,8 @@ for _ , cocktail in df_sample.iterrows():
             alternative_appearence = st.selectbox(f"Proposed classification", 
                                                options=appeareance_options, 
                                                key=f"select_appe_{cocktail['cocktail_name']}")
+            if alternative_appearence == "other":
+                alternative_appearence = st.text_input("Specify:", label_visibility='hidden', key=f"text_input_appea_{cocktail['cocktail_name']}")
         else:
             alternative_appearence = None
 
