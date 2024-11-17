@@ -14,9 +14,9 @@ bucket_name = st.secrets["bucket_mixo_data"]
 object_name = "cocktails_selected.csv"
 
 # Options for the selection on each category
-preparation_options = ['blended', 'builded', 'layered', 'muddle', 'throw', 'shaken', 'stirred', 'swizzle']
-temperature_options = ['ice drinks', 'up drinks', 'warm drinks']
-appeareance_options = ['cloudy', 'clear', 'milky']
+preparation_options = ['blended', 'builded', 'layered', 'muddle', 'throw', 'shaken', 'stirred', 'swizzle', 'other']
+temperature_options = ['ice drinks', 'up drinks', 'warm drinks', 'other']
+appeareance_options = ['cloudy', 'clear', 'milky', 'other']
 
 csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
@@ -62,6 +62,8 @@ for _ , cocktail in df_sample.iterrows():
             alternative_preparation = st.selectbox(f"Proposed classification", 
                                                options=preparation_options, 
                                                key=f"select_prep_{cocktail['cocktail_name']}")
+            if alternative_preparation == "other":
+                alternative_preparationst = st.text_input("Specify", " ", label_visibility='hidden')
         else:
             alternative_preparation = None
 
