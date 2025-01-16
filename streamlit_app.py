@@ -36,20 +36,20 @@ batch_ids = np.sort(df_selection['batch_id'].unique())
 
 responses = []
 st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
-st.title("Evaluation of Cocktail Information")
+st.title("Evaluation of a Cocktail")
 
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
     evaluator_name = st.text_input("Name", " ", label_visibility='hidden', key=f"text_input_name")
-   # st.markdown("<h3 style='text-align: left;'>Please select a batch for classify 10 cocktails:</h3>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:gray;font-weight:bold;'>Working on batch </span> <span style='color:blue; font-weight:bold;'>{current_batch}</span>", unsafe_allow_html=True)
    # selected_batch_id = st.selectbox("Batch", batch_ids, label_visibility='hidden')
 
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
 
-    col1, colsep, col2, col3, col4 = st.columns([3, 0.1, 1, 1, 1])
+    col1, colsep, col2, col3, col4, col5, col6 = st.columns([3, 0.1, 1, 1, 1, 1, 1])
 
     with col1:
         st.markdown(f"**Ingredients:** {cocktail['transformed_ingredients']}")
@@ -100,11 +100,31 @@ for _ , cocktail in df_sample.iterrows():
         else:
             alternative_appearence = None
 
+    with col5:
+        st.markdown(f"<span style='color:gray;font-weight:bold;'>Ice:</span> <span style='color:red; font-weight:bold;'>{cocktail['ice_type']}</span>", unsafe_allow_html=True)
+        agreement_ice = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_ice_{cocktail['cocktail_name']}")
+
+        if agreement_ice == "No":
+            alternative_ice = st.text_input("Specify:", label_visibility='hidden', key=f"text_input_ice_{cocktail['cocktail_name']}")
+        else:
+            alternative_ice = None
+
+    with col6:
+        st.markdown(f"<span style='color:gray;font-weight:bold;'>Glassware:</span> <span style='color:red; font-weight:bold;'>{cocktail['standard_glass_type']}</span>", unsafe_allow_html=True)
+        agreement_glass = st.radio(f"Do you agree?", ("Yes", "No"), key=f"radio_glass_{cocktail['cocktail_name']}")
+
+        if agreement_glass == "No":
+            alternative_glass = st.text_input("Specify:", label_visibility='hidden', key=f"text_input_glass_{cocktail['cocktail_name']}")
+        else:
+            alternative_glass = None
+
     responses.append({
         'Cocktail name': cocktail['cocktail_name'],
         'Proposed preparation': alternative_preparation,
         'Proposed type': alternative_temperature,
-        'Proposed appearence': alternative_appearence
+        'Proposed appearence': alternative_appearence,
+        'Proposed ice': alternative_ice,
+        'Proposed glassware': alternative_glass
     })
     st.write("---")
 
@@ -112,7 +132,7 @@ if st.button("Send evaluation"):
     if evaluator_name:
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"survey/batch_{selected_batch_id - 1}_{evaluator_name}_{timestamp}.csv"
+        filename = f"survey/batch_{current_batch}_{evaluator_name}_{timestamp}.csv"
         
         # Convertir las respuestas en un DataFrame
         df_responses = pd.DataFrame(responses)
