@@ -124,14 +124,6 @@ for _ , cocktail in df_sample.iterrows():
         else:
             alternative_glass = None
 
-    responses.append({
-        'Cocktail name': cocktail['cocktail_name'],
-        'Proposed preparation': alternative_preparation,
-        'Proposed type': alternative_temperature,
-        'Proposed appearence': alternative_appearence,
-        'Proposed ice': alternative_ice,
-        'Proposed glassware': alternative_glass
-    })
     st.write("---")
 
 if st.button("Send evaluation"):
@@ -141,6 +133,17 @@ if st.button("Send evaluation"):
         filename = f"survey/batch_{current_batch}_{evaluator_name}_{timestamp}.csv"
         
         # Convertir las respuestas en un DataFrame
+        responses.append({
+            'Cocktail name': cocktail['cocktail_name'],
+            'Proposed preparation': alternative_preparation,
+            'Proposed type': alternative_temperature,
+            'Proposed appearance': alternative_appearence,
+            'Proposed ice': alternative_ice,
+            'Proposed glassware': alternative_glass,
+            'User name': evaluator_name.strip(),
+            'User email': evaluator_email.strip()
+        })
+
         df_responses = pd.DataFrame(responses)
 
         csv_buffer = StringIO()
