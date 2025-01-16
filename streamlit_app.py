@@ -29,6 +29,10 @@ def get_weekly_batch():
     weeks_since_start = (today - start_date).days // 7
     return (weeks_since_start % 20) + 1
 
+def is_valid_email(email):
+    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(pattern, email) is not None
+
 current_batch = get_weekly_batch()
 df_sample = df_selection[df_selection['batch_id'] == current_batch]
 batch_ids = np.sort(df_selection['batch_id'].unique())
@@ -41,10 +45,13 @@ st.title("Evaluation of a Cocktail")
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
-    evaluator_name = st.text_input("Name", " ", label_visibility='hidden', key=f"text_input_name")
-    st.markdown(f"<h3 style='color:gray;font-weight:bold;'>Working on batch </span> <span style='color:blue; font-weight:bold;'>{current_batch}</span>", unsafe_allow_html=True)
-   # selected_batch_id = st.selectbox("Batch", batch_ids, label_visibility='hidden')
+    st.markdown("<h3 style='text-align: left;'>Please enter your email:</h3>", unsafe_allow_html=True)
 
+with col_ini2:
+    evaluator_name = st.text_input("Name", " ", label_visibility='hidden', key=f"text_input_name")
+    evaluator_email = st.text_input("email", " ", label_visibility='hidden', key=f"text_input_email")
+
+st.markdown(f"<h3 style='color:gray;font-weight:bold;'>Working on batch </span> <span style='color:blue; font-weight:bold;'>{current_batch}</span>", unsafe_allow_html=True)
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
@@ -129,7 +136,7 @@ for _ , cocktail in df_sample.iterrows():
     st.write("---")
 
 if st.button("Send evaluation"):
-    if evaluator_name:
+    if is_valid_email(evaluator_email.strip()) and evaluator_name.strip() != "":
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"survey/batch_{current_batch}_{evaluator_name}_{timestamp}.csv"
@@ -146,4 +153,4 @@ if st.button("Send evaluation"):
         st.write("Evaluation Responses:")
         st.dataframe(df_responses)
     else:
-        st.warning("Please enter your name before submitting.")
+        st.warning("Please enter your name and a valid email address before submitting.")
