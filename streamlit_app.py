@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 import streamlit as st
 import boto3
+import re
 from io import StringIO
 
 
@@ -41,17 +42,15 @@ batch_ids = np.sort(df_selection['batch_id'].unique())
 responses = []
 st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
 st.title("Evaluation of a Cocktail")
+st.markdown(f"<h3 style='color:gray;font-weight:bold;'>Working on batch </span> <span style='color:blue; font-weight:bold;'>{current_batch}</span>", unsafe_allow_html=True)
 
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: left;'>Please enter your email:</h3>", unsafe_allow_html=True)
-
-with col_ini2:
     evaluator_name = st.text_input("Name", " ", label_visibility='hidden', key=f"text_input_name")
+    st.markdown("<h3 style='text-align: left;'>Please enter your email:</h3>", unsafe_allow_html=True)
     evaluator_email = st.text_input("email", " ", label_visibility='hidden', key=f"text_input_email")
 
-st.markdown(f"<h3 style='color:gray;font-weight:bold;'>Working on batch </span> <span style='color:blue; font-weight:bold;'>{current_batch}</span>", unsafe_allow_html=True)
 
 for _ , cocktail in df_sample.iterrows():
     st.subheader(f"Cocktail: {cocktail['cocktail_name']}")
