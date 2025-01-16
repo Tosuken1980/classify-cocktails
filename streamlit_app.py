@@ -22,21 +22,28 @@ csv_obj = s3.get_object(Bucket=bucket_name, Key=object_name)
 body = csv_obj['Body'].read().decode('utf-8')
 df_selection = pd.read_csv(StringIO(body))
 n_cocktails = df_selection.shape[0]
-batch_ids = np.sort(df_selection['batch_id'].unique()) + 1
+
+def get_weekly_batch():
+    start_date = datetime.strptime("2025-01-20", "%Y-%m-%d")
+    today = datetime.now()
+    weeks_since_start = (today - start_date).days // 7
+    return (weeks_since_start % 20) + 1
+
+current_batch = get_weekly_batch()
+df_sample = df_selection[df_selection['batch_id'] == current_batch]
+batch_ids = np.sort(df_selection['batch_id'].unique())
 
 
 responses = []
 st.set_page_config(page_title="Cocktail classification", layout="wide", initial_sidebar_state="expanded")
-st.title("Evaluation of Cocktail Ingredients and Classification")
+st.title("Evaluation of Cocktail Information")
 
 col_ini1, col_ini2 = st.columns([1, 3])
 with col_ini1:
     st.markdown("<h3 style='text-align: left;'>Please enter your name:</h3>", unsafe_allow_html=True)
     evaluator_name = st.text_input("Name", " ", label_visibility='hidden', key=f"text_input_name")
-    st.markdown("<h3 style='text-align: left;'>Please select a batch for classify 10 cocktails:</h3>", unsafe_allow_html=True)
-    selected_batch_id = st.selectbox("Batch", batch_ids, label_visibility='hidden')
-
-df_sample = df_selection[df_selection.batch_id==selected_batch_id - 1]
+   # st.markdown("<h3 style='text-align: left;'>Please select a batch for classify 10 cocktails:</h3>", unsafe_allow_html=True)
+   # selected_batch_id = st.selectbox("Batch", batch_ids, label_visibility='hidden')
 
 
 for _ , cocktail in df_sample.iterrows():
